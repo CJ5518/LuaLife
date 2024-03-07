@@ -40,8 +40,12 @@ function life.setPixel(self, x, y, on)
 	return self.readCells:setPixel(x,y,on,on,on,on);
 end
 
+function life.refreshImage(self)
+	self.image:replacePixels(self.readCells);
+end
+
 function life.draw(self)
-	self.image:replacePixels(self.readCells)
+	self:refreshImage();
 	love.graphics.draw(self.image,0,0,0,1,1);
 end
 
