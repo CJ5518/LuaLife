@@ -38,6 +38,9 @@ local function loadRandomProfile()
 	if not profileData.hasSetRes then
 		--Make up a resolution
 		res = {love.graphics.getPixelDimensions()};
+		local factor = math.pow(2, math.random(0,2));
+		res[1] = res[1] / factor;
+		res[2] = res[2] / factor;
 	else
 		--Profile has set res
 		res = profileData.hasSetRes;

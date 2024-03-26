@@ -8,8 +8,8 @@ function bar10.init(lifeInstance)
 	for x=1, 10 do
 		lifeInstance:setPixel(x+10,8,1);
 	end
-	bar10.timeout = love.timer.getTime() + 3;
-	FRAMERATE_MAX = 5;
+	bar10.timeout = love.timer.getTime() + 10;
+	FRAMERATE_MAX = 10;
 end
 
 return bar10;
