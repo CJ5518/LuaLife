@@ -27,6 +27,14 @@ function life.new(x,y)
 	return o;
 end
 
+function life.clear(self)
+	for x = 0, self:getWidth() - 1 do
+		for y = 0, self:getHeight() - 1 do
+			self:setPixel(x,y,0);
+		end
+	end
+end
+
 function life.getWidth(self)
 	return self.readCells:getWidth();
 end

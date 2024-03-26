@@ -12,6 +12,9 @@ function randProfile.init(lifeInstance)
 			end
 		end
 	end
+	FRAMERATE_MAX = math.random(3,10) * 5;
+	randProfile.timeout = love.timer.getTime() + math.random(15,35);
+
 end
 
 return randProfile;

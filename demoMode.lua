@@ -13,7 +13,13 @@ local profiles = {};
 local profilesRemover = {};
 
 local currentInstance;
-local oldInstance;
+
+--Not the best implementation but don't worry about it
+local fadeAmount = 1;
+local fadeOut = false;
+local fadeIn = false;
+
+local currProfile;
 
 local function loadRandomProfile()
 	if #profilesRemover == 0 then
@@ -39,6 +45,9 @@ local function loadRandomProfile()
 
 	currentInstance = life.new(unpack(res));
 	profileData.init(currentInstance);
+	currProfile = profileData;
+	currProfile.timeoutFramesEdit = currProfile.timeoutFrames;
+	collectgarbage();
 end
 
 local function load()
@@ -54,12 +63,53 @@ local function load()
 end
 
 local function update(dt)
-	currentInstance:update()
+	currentInstance:update();
+	if oldInstance then
+		oldInstance:update();
+	end
+
+	local switchInstances = false;
+
+	if not fadeOut then
+		--Check if we need to switch instances
+		if currProfile.timeoutFrames then
+			currProfile.timeoutFramesEdit = currProfile.timeoutFramesEdit - 1;
+			switchInstances = currProfile.timeoutFramesEdit <= 0;
+		end
+		if currProfile.timeout then
+			switchInstances = love.timer.getTime() >= currProfile.timeout;
+		end
+
+		if switchInstances then
+			fadeAmount = 1;
+			fadeOut = true;
+		end
+	else
+		if not fadeIn then
+			fadeAmount = fadeAmount - (dt / 1);
+			if fadeAmount <= -1 then
+				fadeIn = true;
+				fadeAmount = 0;
+				loadRandomProfile();
+			end
+		else
+			fadeAmount = fadeAmount + (dt / 1.5);
+			if fadeAmount >= 1 then
+				fadeAmount = 1;
+				fadeIn = false;
+				fadeOut = false;
+
+			end
+		end
+	end
 end
 
 local function draw()
 	currentInstance:refreshImage();
 	local x,y = love.graphics.getPixelDimensions();
+
+	love.graphics.setColor(1,1,1,fadeAmount);
+
 	love.graphics.draw(currentInstance.image,0,0,0,x / currentInstance:getWidth(), y / currentInstance:getHeight());
 end
 
