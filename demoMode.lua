@@ -2,15 +2,10 @@
 --Default behavior is to switch between a number of different 'profiles'
 --Examples of profiles can be found in the profiles folder
 
-local life = require("life")
+local life = require("life");
+local profiles = require("profiles");
 
 local demoMode = {}
-
---Full immutable list of profiles
-local profiles = {};
-
---Mutable list of profiles, used in the shuffle process so we don't get repeats
-local profilesRemover = {};
 
 local currentInstance;
 
@@ -22,54 +17,18 @@ local fadeIn = false;
 local currProfile;
 
 local function loadRandomProfile()
-	if #profilesRemover == 0 then
-		for i, v in pairs(profiles) do
-			profilesRemover[i] = v;
-		end
-	end
-
-	local index = math.random(#profilesRemover);
-	local profileName = profilesRemover[index];
-	table.remove(profilesRemover, index);
-
-	local profileData = require("profiles." .. profileName);
-
-	local res;
-	if not profileData.hasSetRes then
-		--Make up a resolution
-		res = {love.graphics.getPixelDimensions()};
-		local factor = math.pow(2, math.random(0,2));
-		res[1] = res[1] / factor;
-		res[2] = res[2] / factor;
-	else
-		--Profile has set res
-		res = profileData.hasSetRes;
-	end
-
-	currentInstance = life.new(unpack(res));
-	profileData.init(currentInstance);
-	currProfile = profileData;
+	currentInstance, currProfile = profiles.loadRandom();
 	currProfile.timeoutFramesEdit = currProfile.timeoutFrames;
 	collectgarbage();
 end
 
 local function load()
-	--Get list of the available profiles
-	files = love.filesystem.getDirectoryItems("profiles");
-	for i,v in pairs(files) do
-		if v:sub(v:len()-3) == ".lua" then
-			profiles[#profiles + 1] = v:sub(0,v:len()-4);
-		end
-	end
-
+	profiles.loadProfileList();
 	loadRandomProfile();
 end
 
 local function update(dt)
 	currentInstance:update();
-	if oldInstance then
-		oldInstance:update();
-	end
 
 	local switchInstances = false;
 
@@ -101,7 +60,6 @@ local function update(dt)
 				fadeAmount = 1;
 				fadeIn = false;
 				fadeOut = false;
-
 			end
 		end
 	end
@@ -117,11 +75,11 @@ local function draw()
 end
 
 
-function demoMode.init()
+function demoMode.init(arg)
 	love.update = update;
 	love.draw = draw;
 
-	load();
+	load(arg);
 end
 
 return demoMode;

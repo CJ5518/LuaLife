@@ -16,7 +16,7 @@ function love.load(arg)
 	elseif arg[1] == "/c" then
 		screensaverSettingsMenu.init();
 	else
-		demoMode.init();
+		demoMode.init(arg);
 	end
 end
 
