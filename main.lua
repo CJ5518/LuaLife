@@ -9,6 +9,7 @@ local readCells, writeCells;
 local lifeInstance;
 
 function love.load(arg)
+	FRAMERATE_MAX = math.huge;
 	math.randomseed(os.time())
 	
 	if arg[1] == "/s" then
@@ -73,5 +74,9 @@ function love.run()
 		
 		love.timer.sleep((1/FRAMERATE_MAX) - frameTime);
 	end
+end
+
+function math.logBase(x, base)
+	return (math.log10(x) / math.log10(base));
 end
 

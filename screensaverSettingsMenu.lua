@@ -1,5 +1,3 @@
---Handles the actual screensaver portion of things
---For the settings menu please see screensaverSettingsMenu.lua
 
 local screensaverSettingsMenu = {}
 
