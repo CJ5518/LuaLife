@@ -196,7 +196,7 @@ function profileModule.loadRandom()
 		name = profiles.rle[profilePick];
 	end
 
-	return profileModule.loadProfile("snarkcatalystvariants.rle", true);
+	return profileModule.loadProfile(name, true);
 
 end
 
