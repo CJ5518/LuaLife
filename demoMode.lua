@@ -19,6 +19,10 @@ local currProfile;
 local function loadRandomProfile()
 	currentInstance, currProfile = profiles.loadRandom();
 	currProfile.timeoutFramesEdit = currProfile.timeoutFrames;
+	if not currProfile.timeout then
+		currProfile.timeout = math.random(10,30) + love.timer.getTime();
+	end
+	
 	collectgarbage();
 end
 

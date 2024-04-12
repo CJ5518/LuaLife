@@ -27,8 +27,6 @@ end
 function love.update()
 end
 
-FRAMERATE_MAX = 40000;
-
 --Override love.run because I am gigachad
 function love.run()
 	if love.load then love.load(love.arg.parseGameArguments(arg), arg) end

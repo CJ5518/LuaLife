@@ -158,6 +158,7 @@ function profileModule.loadProfile(name, randomRes)
 		end
 		--Unreadable and uncommented math, taking a page out Landon's book
 		maxFactor = math.floor(math.min(math.logBase(res[1] / maxFactorDividerX, 2), math.logBase(res[2] / maxFactorDividerY, 2))) - 1;
+		maxFactor = math.min(9,maxFactor);
 
 		if profile.minRes then
 			minFactor = (maxFactor >= 3) and (maxFactor - 3) or 0;
@@ -195,7 +196,7 @@ function profileModule.loadRandom()
 		profilePick = profilePick - #profiles.cells;
 		name = profiles.rle[profilePick];
 	end
-
+	FRAMERATE_MAX = math.random(2,30) * 5;
 	return profileModule.loadProfile(name, true);
 
 end
