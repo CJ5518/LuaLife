@@ -60,7 +60,7 @@ function profileModule.loadProfile(name, randomRes)
 	--cells file
 	if tab == profiles.cells then
 		profile = {};
-		local file = io.open("profiles/cells/" .. name, "r");
+		local file = love.filesystem.newFile("profiles/cells/" .. name, "r");
 		local lineCount, lineSize = 0,0;
 		for line in file:lines() do
 			if line:sub(1,1) == "!" then
@@ -72,7 +72,7 @@ function profileModule.loadProfile(name, randomRes)
 		file:close();
 		profile.minRes = {lineSize, lineCount};
 		profile.init = function (lifeInstance)
-			local fil = io.open("profiles/cells/" .. name, "r");
+			local fil = love.filesystem.newFile("profiles/cells/" .. name, "r");
 			local lifeStartX = math.floor(((lifeInstance:getWidth() / 2) - (lineSize / 2)) + .5);
 			local lifeStartY = math.floor(((lifeInstance:getHeight() / 2) - (lineCount / 2)) + .5);
 			local count = 0;
@@ -93,7 +93,7 @@ function profileModule.loadProfile(name, randomRes)
 	--rle file
 	if tab == profiles.rle then
 		profile = {};
-		local file = io.open("profiles/rle/" .. name, "r");
+		local file = love.filesystem.newFile("profiles/rle/" .. name, "r");
 		for line in file:lines() do
 			if line:sub(1,1) == "#" then
 			else
@@ -105,7 +105,7 @@ function profileModule.loadProfile(name, randomRes)
 			end
 		end
 		profile.init = function(lifeInstance)
-			local fil = io.open("profiles/rle/" .. name, "r");
+			local fil = love.filesystem.newFile("profiles/rle/" .. name, "r");
 			local lifeStartX = math.floor(((lifeInstance:getWidth() / 2) - (profile.minRes[1] / 2)) + .5);
 			local lifeStartY = math.floor(((lifeInstance:getHeight() / 2) - (profile.minRes[2] / 2)) + .5);
 			local count = 0;
@@ -132,9 +132,6 @@ function profileModule.loadProfile(name, randomRes)
 							numberStack = "";
 						end
 						if char == "!" then break end
-
-						--lifeInstance:setPixel(x+lifeStartX,count+lifeStartY,line:sub(char,char) == "O" and 1 or 0)
-
 					end
 				end
 			end
